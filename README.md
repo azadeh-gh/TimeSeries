@@ -1,9 +1,9 @@
 ## Time Series Analysis in Python
-Daily precipitation data stored as PPT_data.csv. The matplotlib and seaborn were used to visualise time series data. 
+Daily precipitation data stored as PPT_data.csv.
 Boxplots were used to present the Month-wise or seasonal and Year-wise or trend distribution of data. 
-The PPT data (timeseries) were splitted (decomposed) into the following components: Base level + Trend +Seasonality + Error. Classical time series decomposition was done by considering the series as an additive or sum and multiplicative or product of the components.
-The satatonarity as a property of the time series also was checked using two methods (Augmented Dickey Fuller test (ADH Test) Kwiatkowski-Phillips-Schmidt-Shin – KPSS test (trend stationary)) to check if the series is a function of time or is constant over time.
-Smoothen ofthe time series were used to reduce the effect of noise in a signal and get a fair approximation of the noise-filtered series and also to visualize the underlying trend better.
+The PPT data (timeseries) were splitted (decomposed) into the following components: Base level + Trend +Seasonality + Error. 
+The satatonarity as a property of the time series also was checked using two methods to check if the series is a function of time or is constant over time.
+Smoothen of the time series were used to reduce the effect of noise in a signal and get a fair approximation of the noise-filtered series and also to visualize the underlying trend better.
 
 ## Source
 Precipitation data downloaded from https://power.larc.nasa.gov/ for Texas.
@@ -143,7 +143,6 @@ plot_decompose(df_reconstructed_add,"trend","Trend")
 plt.subplot(4, 1, 3)
 plot_decompose(df_reconstructed_add,"seas","Seasonal")
 plt.subplot(4, 1, 4)
-plt.gca()
 plt.scatter(df_reconstructed_add.index,df_reconstructed_add["resid"],color="blue",facecolor="none")
 plt.axhline(y=0)
 plt.ylabel("Residual",fontsize=14)
@@ -180,7 +179,7 @@ Loess Smoothing (5% and 15%)
 df_loess_5 = pd.DataFrame(lowess(df["PPT[mm]"], np.arange(len(df["PPT[mm]"])), frac=0.05)[:, 1], index=df.index, columns=["PPT[mm]"])
 df_loess_15 = pd.DataFrame(lowess(df["PPT[mm]"], np.arange(len(df["PPT[mm]"])), frac=0.15)[:, 1], index=df.index, columns=['PPT[mm]'])
 ```
-Plot
+Smoothen Plots
 ```python
 fig, axes = plt.subplots(3,1, figsize=(7, 7), sharex=True, dpi=120)
 df['PPT[mm]'].plot(ax=axes[0], color='k', title='Original Series')
