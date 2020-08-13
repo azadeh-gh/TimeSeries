@@ -1,5 +1,4 @@
 #import packages
-from dateutil.parser import parse
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -115,15 +114,11 @@ def plot_decompose(DF,colName,ylabel):
 plt.figure(figsize=(10,10))
 plt.subplot(4,1,1)
 plot_decompose(df_reconstructed_add,"actual_values","Observed")
-
 plt.subplot(4, 1, 2)
 plot_decompose(df_reconstructed_add,"trend","Trend")
-
 plt.subplot(4, 1, 3)
 plot_decompose(df_reconstructed_add,"seas","Seasonal")
-
 plt.subplot(4, 1, 4)
-plt.gca()
 plt.scatter(df_reconstructed_add.index,df_reconstructed_add["resid"],color="blue",facecolor="none")
 plt.axhline(y=0)
 plt.ylabel("Residual",fontsize=14)
