@@ -10,6 +10,7 @@ from statsmodels.tsa.seasonal import seasonal_decompose
 from dateutil.parser import parse
 from statsmodels.tsa.stattools import adfuller, kpss
 from pandas.plotting import autocorrelation_plot
+from statsmodels.nonparametric.smoothers_lowess import lowess
 
 # Import data as Dataframe
 df = pd.read_csv('../PPT_data/PPT_data.csv')
@@ -45,7 +46,7 @@ def plot_df( x, y, title="", xlabel='Date', ylabel='PPT', dpi=100):
 
 
 # Use The defined function to visualize a PPT time series
-plot_df(x=df['Date'], y=df["PPT[mm]"], title='Daily precepitation [mm].')
+plot_df(x=df['Date'], y=df["PPT[mm]"], title='Daily precepitation [mm]')
 
 #Define a boolean to remove zero values
 bool=df["PPT[mm]"]==0
@@ -59,7 +60,7 @@ df['month'] = [d.strftime('%b') for d in df["Date"]]
 years = df['year'].unique()
 
 # Draw Plot
-fig, axes = plt.subplots(1, 2, figsize=(10,4), dpi= 80)
+fig, axes = plt.subplots(1, 2, figsize=(12,4), dpi= 80)
 sns.boxplot(x='year', y='PPT[mm]', data=df, ax=axes[0])
 sns.boxplot(x='month', y='PPT[mm]', data=df.loc[~df.year.isin([2017, 2020]), :])
 
@@ -73,6 +74,7 @@ axes[0].set_ylabel("PPT [mm]", fontsize=14)
 axes[0].set_xlabel("Year", fontsize=14)
 axes[1].set_ylabel("PPT [mm]", fontsize=14)
 axes[1].set_xlabel("Month", fontsize=14)
+plt.tight_layout()
 plt.savefig('../Results/PPT_Boxplots.png')
 plt.close()
 
@@ -151,9 +153,15 @@ for key, value in result[3].items():
     print('Critial Values:')
     print(f'   {key}, {value}')
 
-#seasonality test of a time series
+#Smoothen time searies
+# Loess Smoothing (5% and 15%)
+df_loess_5 = pd.DataFrame(lowess(df["PPT[mm]"], np.arange(len(df["PPT[mm]"])), frac=0.05)[:, 1], index=df.index, columns=["PPT[mm]"])
+df_loess_15 = pd.DataFrame(lowess(df["PPT[mm]"], np.arange(len(df["PPT[mm]"])), frac=0.15)[:, 1], index=df.index, columns=['PPT[mm]'])
 
-# Draw Plot
-plt.rcParams.update({'figure.figsize':(12,2), 'figure.dpi':120})
-autocorrelation_plot(df["PPT[mm]"].tolist())
-plt.savefig('../Results/autocorrelation.png')
+# Plot
+fig, axes = plt.subplots(3,1, figsize=(7, 7), sharex=True, dpi=120)
+df['PPT[mm]'].plot(ax=axes[0], color='k', title='Original Series')
+df_loess_5['PPT[mm]'].plot(ax=axes[1], title='Loess Smoothed 5%')
+df_loess_15['PPT[mm]'].plot(ax=axes[2], title='Loess Smoothed 15%')
+fig.suptitle('How to Smoothen a Time Series', y=0.95, fontsize=14)
+plt.savefig('../Results/PPT_Loess.png')
