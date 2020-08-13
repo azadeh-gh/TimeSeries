@@ -1,8 +1,12 @@
 ## Time Series Analysis in Python
 Daily precipitation data stored as PPT_data.csv.
-Boxplots were used to present the Month-wise or seasonal and Year-wise or trend distribution of data. 
-The PPT data (timeseries) were splitted (decomposed) into the following components: Base level + Trend +Seasonality + Error. 
+
+Boxplots were used to present the Month-wise or seasonal and Year-wise or trend distribution of data.
+
+The PPT data (timeseries) were splitted (decomposed) into the following components: Base level + Trend +Seasonality + Error.
+
 The satatonarity as a property of the time series also was checked using two methods to check if the series is a function of time or is constant over time.
+
 Smoothen of the time series were used to reduce the effect of noise in a signal and get a fair approximation of the noise-filtered series and also to visualize the underlying trend better.
 
 ## Source
@@ -82,6 +86,8 @@ Use The defined function to visualize a PPT time series
 ```python
 plot_df(x=df['Date'], y=df["PPT[mm]"], title='Daily precepitation [mm]')
 ```
+![](Results/PPT_timeSeries.png?raw=true)
+
 Define a boolean to remove zero values
 ```python
 bool=df["PPT[mm]"]==0
@@ -106,6 +112,8 @@ plt.tight_layout()
 plt.savefig('../Results/PPT_Boxplots.png')
 plt.close()
 ```
+![](Results/PPT_Boxplots.png?raw=true)
+
 **Patterns in time series**
 Multiplicative Decomposition
 ```python
@@ -119,7 +127,6 @@ result_add = seasonal_decompose(df['PPT[mm]'], model='additive', extrapolate_tre
 plt.rcParams.update({'figure.figsize': (10,12)})
 result_mul.plot().suptitle('Multiplicative Decompose', fontsize=22)
 result_add.plot().suptitle('Additive Decompose', fontsize=22)
-plt.show()
 ```
 Create variables that record the inputs and targets for training.
 
@@ -151,6 +158,8 @@ plt.tight_layout()
 plt.savefig('../Results/Decompose.png')
 plt.close()
 ```
+![](Results/Decompose.png?raw=true)
+
 **Stationarity test using Augmented Dickey Fuller test (ADH Test) and  Kwiatkowski-Phillips-Schmidt-Shin – KPSS test (trend stationary)**
 ADF Test:the null hypothesis is the time series possesses a unit root and is non-stationary. So, id the P-Value in ADH test is less than the significance level (0.05), you reject the null hypothesis.
 
@@ -162,6 +171,23 @@ for key, value in result[4].items():
     print('Critial Values:')
     print(f'   {key}, {value}')
 ```
+*ADF results*
+ADF Statistic: -12.946856809809937
+
+p-value: 3.44126071094833e-24
+
+Critial Values:
+
+   1%, -3.474120870218417
+   
+Critial Values:
+
+   5%, -2.880749791423677
+   
+Critial Values:
+
+   10%, -2.5770126333102494
+   
 KPSS Test: #The null hypothesis and the P-Value interpretation is just the opposite of ADH test. The below code implements these two tests using statsmodels package in python.
 
 ```python
@@ -172,6 +198,28 @@ for key, value in result[3].items():
     print('Critial Values:')
     print(f'   {key}, {value}')
 ```
+*KPSS results*
+
+KPSS Statistic: 0.063848
+
+p-value: 0.100000
+
+Critial Values:
+
+   10%, 0.347
+   
+Critial Values:
+
+   5%, 0.463
+   
+Critial Values:
+
+   2.5%, 0.574
+   
+Critial Values:
+
+   1%, 0.739
+   
 **Smoothen time searies**
 
 Loess Smoothing (5% and 15%)
@@ -188,3 +236,4 @@ df_loess_15['PPT[mm]'].plot(ax=axes[2], title='Loess Smoothed 15%')
 fig.suptitle('How to Smoothen a Time Series', y=0.95, fontsize=14)
 plt.savefig('../Results/PPT_Loess.png')
 ```
+![](Results/PPT_Loess.png?raw=true)
