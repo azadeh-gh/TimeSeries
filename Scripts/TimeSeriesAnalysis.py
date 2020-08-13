@@ -6,11 +6,15 @@ import seaborn as sns
 import numpy as np
 import pandas as pd
 import datetime
+from statsmodels.tsa.seasonal import seasonal_decompose
+from dateutil.parser import parse
+from statsmodels.tsa.stattools import adfuller, kpss
+from pandas.plotting import autocorrelation_plot
 
 # Import data as Dataframe
-df = pd.read_csv('C:/Users/azadeh/Desktop/github/TimeSeries/PPT_data/PPT_data.csv')
+df = pd.read_csv('../PPT_data/PPT_data.csv')
 df["Date"]=pd.to_datetime(df["Date"], format="%m/%d/%Y")
-print(df.head())
+
 #define a function to remove outliers
 def remove_outlier(DF,col_name,coef):
     originalArray=DF[col_name]
@@ -21,7 +25,7 @@ def remove_outlier(DF,col_name,coef):
     return CleanedDF
 
 #use function to remove outliers
-# df=remove_outlier(df,"PPT[mm]",3)
+df=remove_outlier(df,"PPT[mm]",3)
 
 #Define start and end date that will use
 startDate=datetime.datetime.strptime("01/01/2017", "%m/%d/%Y")
@@ -30,24 +34,24 @@ EndDate = datetime.datetime.strptime("12/30/2019", "%m/%d/%Y")
 #Define Boolean and select dates between start date and end date
 BoolL_Data = ((df["Date"] > startDate) & (df["Date"] < EndDate))
 df = df[BoolL_Data]
-# print(df.head())
 
 #Define a function and use matplotlib to visualise the series
-def plot_df(df, x, y, title="", xlabel='Date', ylabel='PPT', dpi=100):
+def plot_df( x, y, title="", xlabel='Date', ylabel='PPT', dpi=100):
     plt.figure(figsize=(10,4), dpi=dpi)
     plt.plot(x, y, color='tab:blue')
     plt.gca().set(title=title, xlabel=xlabel, ylabel=ylabel)
-    # plt.show()
+    plt.savefig('../Results/PPT_timeSeries.png')
+    plt.close()
+
 
 # Use The defined function to visualize a PPT time series
-plot_df(df, x=df['Date'], y=df["PPT[mm]"], title='Daily precepitation [mm].')
+plot_df(x=df['Date'], y=df["PPT[mm]"], title='Daily precepitation [mm].')
 
 #Define a boolean to remove zero values
 bool=df["PPT[mm]"]==0
 df=df[~bool]
 
 #Boxplot of Month-wise (Seasonal) and Year-wise (trend) Distribution
-# df.reset_index(inplace=True)
 
 # Prepare data
 df['year'] = [d.year for d in df["Date"]]
@@ -69,13 +73,12 @@ axes[0].set_ylabel("PPT [mm]", fontsize=14)
 axes[0].set_xlabel("Year", fontsize=14)
 axes[1].set_ylabel("PPT [mm]", fontsize=14)
 axes[1].set_xlabel("Month", fontsize=14)
-# plt.show()
+plt.savefig('../Results/PPT_Boxplots.png')
+plt.close()
 
 #Patterns in time series
 
 # Decompose PPT time series into its component
-from statsmodels.tsa.seasonal import seasonal_decompose
-from dateutil.parser import parse
 
 #Make "Date" column as index
 df.set_index("Date", inplace=True)
@@ -90,7 +93,8 @@ result_add = seasonal_decompose(df['PPT[mm]'], model='additive', extrapolate_tre
 plt.rcParams.update({'figure.figsize': (10,12)})
 result_mul.plot().suptitle('Multiplicative Decompose', fontsize=22)
 result_add.plot().suptitle('Additive Decompose', fontsize=22)
-plt.show()
+plt.close()
+
 
 #Put additive decomposition results in a DataFrame
 df_reconstructed_add = pd.concat([result_add.seasonal, result_add.trend, result_add.resid, result_add.observed],axis=1)
@@ -104,6 +108,7 @@ def plot_decompose(DF,colName,ylabel):
     plt.plot(DF[colName], color="blue")
     plt.title("Additive decomposition", fontsize=16)
     plt.ylabel(ylabel, fontsize=14)
+
 
 plt.figure(figsize=(10,10))
 plt.subplot(4,1,1)
@@ -122,10 +127,11 @@ plt.axhline(y=0)
 plt.ylabel("Residual",fontsize=14)
 plt.xlabel("Date", fontsize=14)
 plt.tight_layout()
-plt.show()
+plt.savefig('../Results/Decompose.png')
+plt.close()
 
 # Stationarity test using Augmented Dickey Fuller test (ADH Test) and  Kwiatkowski-Phillips-Schmidt-Shin – KPSS test (trend stationary)
-from statsmodels.tsa.stattools import adfuller, kpss
+
 
 # ADF Test
 #the null hypothesis is the time series possesses a unit root and is non-stationary. So, id the P-Value in ADH test is less than the significance level (0.05), you reject the null hypothesis.
@@ -146,8 +152,8 @@ for key, value in result[3].items():
     print(f'   {key}, {value}')
 
 #seasonality test of a time series
-from pandas.plotting import autocorrelation_plot
+
 # Draw Plot
-plt.rcParams.update({'figure.figsize':(9,5), 'figure.dpi':120})
+plt.rcParams.update({'figure.figsize':(12,2), 'figure.dpi':120})
 autocorrelation_plot(df["PPT[mm]"].tolist())
-plt.show()
+plt.savefig('../Results/autocorrelation.png')
