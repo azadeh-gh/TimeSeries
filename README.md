@@ -1,7 +1,4 @@
-# Using deep learning neural networks to Predict the recovery effectivness (REN) of water well
-**This repository contains project data, notes and scripts for  artificial neural network based predicting of REN using factors that significantly affecting REN in water well.**  
-## Description
-The REN performance criterion equals the amount of the water injected in water well that is recoverable via the same well during a specified exatraction period.
+ REN performance criterion equals the amount of the water injected in water well that is recoverable via the same well during a specified exatraction period.
 
 The dataset used to train and verify the ANN derive from 5,000 MODFLOW-MT3DMS simulations. Inputs (independent variables) for these simulations differ for seven hydrogeological and operational
 factors that potentially impact REN. These factors are: background gradient, hydraulic conductivity, injection rate and duration, extraction rate and duration, storage duration, aquifer thickness, porosity, and
