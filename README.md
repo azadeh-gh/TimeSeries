@@ -1,5 +1,5 @@
 ## Time Series Analysis in Python
-Daily precipitation data stored as PPT_data.csv.
+Here we want to perform time series analysis on daily precipitation data (stored as PPT_data.csv).
 
 Boxplots were used to present the Month-wise or seasonal and Year-wise or trend distribution of data.
 
