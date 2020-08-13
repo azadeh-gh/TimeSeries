@@ -5,7 +5,7 @@ Boxplots were used to present the Month-wise or seasonal and Year-wise or trend 
 
 The PPT data (timeseries) were splitted (decomposed) into the following components: Base level + Trend +Seasonality + Error.
 
-The satatonarity as a property of the time series also was checked using two methods to check if the series is a function of time or is constant over time.
+The satatonarity as a property of the time series also was checked using two methods to check if the series is a function of time.
 
 Smoothen of the time series were used to reduce the effect of noise in a signal and get a fair approximation of the noise-filtered series and also to visualize the underlying trend better.
 
