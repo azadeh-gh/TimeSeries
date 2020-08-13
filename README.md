@@ -232,7 +232,7 @@ fig, axes = plt.subplots(3,1, figsize=(7, 7), sharex=True, dpi=120)
 df['PPT[mm]'].plot(ax=axes[0], color='k', title='Original Series')
 df_loess_5['PPT[mm]'].plot(ax=axes[1], title='Loess Smoothed 5%')
 df_loess_15['PPT[mm]'].plot(ax=axes[2], title='Loess Smoothed 15%')
-fig.suptitle('How to Smoothen a Time Series', y=0.95, fontsize=14)
+fig.suptitle('Smoothen a Time Series', y=0.95, fontsize=14)
 plt.savefig('../Results/PPT_Loess.png')
 ```
 ![](Results/PPT_Loess.png?raw=true)
