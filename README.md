@@ -41,7 +41,7 @@ from statsmodels.nonparametric.smoothers_lowess import lowess
 
 Import data as Dataframe
 ```python
-raw_csv_data = pd.read_csv("data/Data.out",delim_whitespace=True)
+raw_csv_data = pd.read_csv("data/Data.out")
 ```
 Changing the type of "Date" column to datetime
 ```python
@@ -64,7 +64,7 @@ df=remove_outlier(df,"PPT[mm]",3)
 ```
 Define start and end date that will use
 ```python
-startDate=datetime.datetime.strptime("01/01/2017", "%m/%d/%Y")
+startDate = datetime.datetime.strptime("01/01/2017", "%m/%d/%Y")
 EndDate = datetime.datetime.strptime("12/30/2019", "%m/%d/%Y")
 ```
 Define Boolean and select dates between start date and end date
