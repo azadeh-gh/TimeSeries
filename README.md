@@ -82,7 +82,7 @@ def plot_df( x, y, title="", xlabel='Date', ylabel='PPT', dpi=100):
     plt.savefig('../Results/PPT_timeSeries.png')
     plt.close()
 ```
-Use The defined function to visualize a PPT time series
+Use the function to visualize a PPT time series
 ```python
 plot_df(x=df['Date'], y=df["PPT[mm]"], title='Daily precepitation [mm]')
 ```
@@ -128,7 +128,6 @@ plt.rcParams.update({'figure.figsize': (10,12)})
 result_mul.plot().suptitle('Multiplicative Decompose', fontsize=22)
 result_add.plot().suptitle('Additive Decompose', fontsize=22)
 ```
-Create variables that record the inputs and targets for training.
 
 Put additive decomposition results in a DataFrame
 ```python
@@ -161,7 +160,7 @@ plt.close()
 ![](Results/Decompose.png?raw=true)
 
 **Stationarity test using Augmented Dickey Fuller test (ADH Test) and  Kwiatkowski-Phillips-Schmidt-Shin – KPSS test (trend stationary)**
-ADF Test:the null hypothesis is the time series possesses a unit root and is non-stationary. So, id the P-Value in ADH test is less than the significance level (0.05), you reject the null hypothesis.
+ADF Test: the null hypothesis is the time series possesses a unit root and is non-stationary. So, id the P-Value in ADH test is less than the significance level (0.05), you reject the null hypothesis.
 
 ```python
 result = adfuller(df["PPT[mm]"].values, autolag='AIC')
@@ -220,7 +219,7 @@ Critial Values:
 
    1%, 0.739
    
-**Smoothen time searies**
+**Smoothen time series**
 
 Loess Smoothing (5% and 15%)
 ```python
